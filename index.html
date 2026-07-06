@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>Aayushi &amp; Chirag — Engagement Invitation</title>
+  <meta name="description" content="Join Aayushi &amp; Chirag as they unite in sacred engagement. Sunday, 19 July 2026 at Rajput Samaj Bhavan, Wadhwan." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Aayushi &amp; Chirag — Engagement Invitation" />
+  <meta property="og:description" content="Seek your blessings as they unite in sacred engagement and celebrate this auspicious occasion." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aayushi &amp; Chirag — Engagement Invitation" />
+  <meta name="twitter:description" content="Seek your blessings as they unite in sacred engagement and celebrate this auspicious occasion." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Page Loader -->
+  <div class="loader" id="pageLoader">
+    <div class="loader-inner">
+      <img src="assets/ganesha.png" alt="" class="loader-ganesha" />
+      <p class="loader-text">Aayushi &amp; Chirag</p>
+      <div class="loader-bar"><span></span></div>
+    </div>
+  </div>
+
+  <!-- Invitation opening overlay -->
+  <div class="invite-seal" id="inviteSeal">
+    <div class="seal-card">
+      <img src="assets/ganesha.png" alt="Ganesha" class="seal-ganesha" />
+      <h2>You Are Invited</h2>
+      <p>to the engagement of</p>
+      <p class="seal-names">Aayushi <span>&amp;</span> Chirag</p>
+      <button class="btn btn-gold" id="openInviteBtn">
+        <span>Open Invitation</span>
+        <i class="fa-solid fa-heart"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Floating petals canvas layer (DOM based) -->
+  <div class="petals-layer" id="petalsLayer" aria-hidden="true"></div>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <canvas id="heroCanvas" class="hero-canvas"></canvas>
+      <div class="hero-fog"></div>
+      <div class="hero-rays"></div>
+
+      <div class="hero-content">
+        <img src="assets/ganesha.png" alt="Ganesha" class="hero-ganesha" data-parallax="0.02" />
+
+        <p class="eyebrow" data-aos="fade-down" data-aos-delay="100">Together with their families</p>
+        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="200">
+          <span class="name">Aayushi</span>
+          <span class="amp">&amp;</span>
+          <span class="name">Chirag</span>
+        </h1>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="350">
+          Seek your blessings as they unite in sacred engagement and celebrate this auspicious occasion.
+        </p>
+
+        <div class="glass-card hero-card" data-aos="zoom-in" data-aos-delay="500" data-tilt data-tilt-max="6" data-tilt-glare data-tilt-max-glare="0.2">
+          <div class="hero-card-row">
+            <i class="fa-regular fa-calendar"></i>
+            <div>
+              <span class="label">Sunday</span>
+              <span class="value">19 July 2026</span>
+            </div>
+          </div>
+          <div class="hero-card-divider"></div>
+          <div class="hero-card-row">
+            <i class="fa-regular fa-clock"></i>
+            <div>
+              <span class="label">Begins at</span>
+              <span class="value">9:00 AM</span>
+            </div>
+          </div>
+          <div class="hero-card-divider"></div>
+          <div class="hero-card-row">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <span class="label">Rajput Samaj Bhavan</span>
+              <span class="value">Kharwani Poll Darwaja, Wadhwan, Surendranagar</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-gold ripple" id="saveDateBtn" data-aos="fade-up" data-aos-delay="650">
+          <span>Save the Date</span>
+          <i class="fa-regular fa-bookmark"></i>
+        </button>
+      </div>
+
+      <button class="scroll-cue" id="scrollCue" aria-label="Scroll down">
+        <span></span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </section>
+
+    <!-- COUPLE / GARDEN 3D SHOWCASE -->
+    <section class="couple-scene" id="couple">
+      <div class="couple-bg" style="background-image:url('assets/garden.png')"></div>
+      <div class="couple-scrim"></div>
+      <div class="couple-inner">
+        <div class="couple-figure" data-parallax="0.04">
+          <div class="couple-figure-glow"></div>
+          <img src="assets/couple.png" alt="Aayushi and Chirag illustration" class="couple-img" id="coupleImg" data-tilt data-tilt-max="10" data-tilt-speed="600" data-tilt-glare data-tilt-max-glare="0.25" />
+        </div>
+        <div class="couple-copy" data-aos="fade-left">
+          <p class="eyebrow">A Royal Garden Romance</p>
+          <h2>Two Souls, One Sacred Bond</h2>
+          <p class="couple-text">
+            Amid blooming gardens and golden light, Aayushi and Chirag begin a journey
+            written in the stars — cherished by family, blessed by tradition, and
+            celebrated with joy.
+          </p>
+        </div>
+      </div>
+      <img class="garden-peacock" src="assets/gallery-3.png" alt="" data-parallax="0.03" />
+    </section>
+
+    <!-- WELCOME -->
+    <section class="welcome" id="welcome">
+      <div class="welcome-inner">
+        <p class="eyebrow" data-aos="fade-up">Welcome</p>
+        <h2 class="welcome-title">
+          <span data-aos="fade-up" data-aos-delay="100">Two Hearts</span>
+          <span data-aos="fade-up" data-aos-delay="250">One Beautiful Beginning</span>
+        </h2>
+        <p class="welcome-text" data-aos="fade-up" data-aos-delay="400">
+          With hearts full of gratitude and joy, we invite you to witness the union of
+          two families as Aayushi and Chirag embark on this beautiful chapter of life.
+        </p>
+      </div>
+      <div class="divider-flourish" data-aos="fade-in">
+        <i class="fa-solid fa-spa"></i>
+      </div>
+    </section>
+
+    <!-- EVENT DETAILS -->
+    <section class="details" id="details">
+      <canvas id="ringCanvas" class="ring-canvas" aria-hidden="true"></canvas>
+      <p class="eyebrow center" data-aos="fade-up">The Occasion</p>
+      <h2 class="section-title center" data-aos="fade-up">Event Details</h2>
+
+      <div class="details-grid">
+        <div class="glass-card detail-card" data-aos="fade-up" data-aos-delay="0" data-tilt data-tilt-max="8" data-tilt-glare data-tilt-max-glare="0.15">
+          <i class="fa-regular fa-calendar-days"></i>
+          <h3>Date</h3>
+          <p>Sunday<br />19th July, 2026</p>
+        </div>
+        <div class="glass-card detail-card" data-aos="fade-up" data-aos-delay="150" data-tilt data-tilt-max="8" data-tilt-glare data-tilt-max-glare="0.15">
+          <i class="fa-regular fa-clock"></i>
+          <h3>Time</h3>
+          <p>9:00 AM<br />Auspicious Muhurat</p>
+        </div>
+        <div class="glass-card detail-card" data-aos="fade-up" data-aos-delay="300" data-tilt data-tilt-max="8" data-tilt-glare data-tilt-max-glare="0.15">
+          <i class="fa-solid fa-landmark"></i>
+          <h3>Venue</h3>
+          <p>Rajput Samaj Bhavan<br />Wadhwan, Surendranagar</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR JOURNEY -->
+    <section class="journey" id="journey">
+      <p class="eyebrow center" data-aos="fade-up">Our Story</p>
+      <h2 class="section-title center" data-aos="fade-up">Our Journey</h2>
+
+      <div class="journey-track">
+        <div class="journey-line"></div>
+        <div class="journey-card" data-aos="fade-up" data-aos-delay="0" data-tilt data-tilt-max="10">
+          <span class="journey-icon"><i class="fa-solid fa-heart"></i></span>
+          <h3>Love</h3>
+          <p>Two hearts found each other and a quiet spark grew into something eternal.</p>
+        </div>
+        <div class="journey-card" data-aos="fade-up" data-aos-delay="150" data-tilt data-tilt-max="10">
+          <span class="journey-icon"><i class="fa-solid fa-people-roof"></i></span>
+          <h3>Families</h3>
+          <p>Two families came together with blessings, laughter, and open hearts.</p>
+        </div>
+        <div class="journey-card" data-aos="fade-up" data-aos-delay="300" data-tilt data-tilt-max="10">
+          <span class="journey-icon"><i class="fa-solid fa-ring"></i></span>
+          <h3>Engagement</h3>
+          <p>A sacred promise is made — the first thread of a beautiful new bond.</p>
+        </div>
+        <div class="journey-card" data-aos="fade-up" data-aos-delay="450" data-tilt data-tilt-max="10">
+          <span class="journey-icon"><i class="fa-solid fa-infinity"></i></span>
+          <h3>Forever</h3>
+          <p>A lifetime of togetherness begins, written with love, one day at a time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section class="countdown" id="countdown">
+      <div class="countdown-bg"></div>
+      <canvas id="orbCanvas" class="orb-canvas" aria-hidden="true"></canvas>
+      <p class="eyebrow center light" data-aos="fade-up">Save The Date</p>
+      <h2 class="section-title center light" data-aos="fade-up">Counting Down To Forever</h2>
+      <div class="countdown-grid" data-aos="zoom-in">
+        <div class="countdown-cell">
+          <span class="countdown-number" id="cdDays">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-cell">
+          <span class="countdown-number" id="cdHours">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-cell">
+          <span class="countdown-number" id="cdMinutes">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-cell">
+          <span class="countdown-number" id="cdSeconds">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENUE -->
+    <section class="venue" id="venue">
+      <div class="venue-inner">
+        <div class="venue-copy" data-aos="fade-right">
+          <p class="eyebrow">Join Us At</p>
+          <h2 class="section-title">Rajput Samaj Bhavan</h2>
+          <p class="venue-address">
+            Kharwani Poll Darwaja<br />
+            Wadhwan, Surendranagar<br />
+            Gujarat, India
+          </p>
+          <a class="btn btn-outline-gold" href="https://www.google.com/maps/search/?api=1&query=Rajput+Samaj+Bhavan+Kharwani+Poll+Darwaja+Wadhwan+Surendranagar" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>View on Google Maps</span>
+          </a>
+        </div>
+        <div class="venue-visual" data-aos="fade-left" data-tilt data-tilt-max="8">
+          <img src="assets/gallery-2.png" alt="Venue illustration" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-flowers" aria-hidden="true"></div>
+    <img src="assets/ganesha.png" alt="Ganesha" class="footer-ganesha" data-aos="fade-up" />
+    <p class="footer-text" data-aos="fade-up">With Love</p>
+    <p class="footer-names" data-aos="fade-up">Aayushi &amp; Chirag</p>
+    <p class="footer-copy">19th July, 2026 &middot; Wadhwan, Surendranagar</p>
+  </footer>
+
+  <!-- CDN Libraries -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://unpkg.com/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
