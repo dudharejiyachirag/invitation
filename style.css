@@ -1,5 +1,5 @@
 /* ===========================================================
-   Aayushi & Chirag — Royal Engagement Invitation
+   Aayushi & Chirag - Royal Engagement Invitation
    Vanilla HTML/CSS/JS. Palette: ivory, sage, rose, wine, gold.
    =========================================================== */
 
@@ -560,14 +560,18 @@ section {
 }
 .ring-canvas {
   position: absolute;
-  top: -40px;
+  top: -130px;
   left: 50%;
   transform: translateX(-50%);
-  width: 220px;
-  height: 220px;
+  width: 180px;
+  height: 180px;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.95;
+  filter: drop-shadow(0 22px 34px rgba(184, 147, 74, 0.35));
+}
+@media (max-width: 600px) {
+  .ring-canvas { top: -95px; width: 130px; height: 130px; }
 }
 .details-grid {
   position: relative;

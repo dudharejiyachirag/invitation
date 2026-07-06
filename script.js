@@ -1,5 +1,5 @@
 /* ===========================================================
-   Aayushi & Chirag — Royal Engagement Invitation
+   Aayushi & Chirag - Royal Engagement Invitation
    Vanilla JS. Uses GSAP, Lenis, AOS, VanillaTilt, Three.js (CDN).
    =========================================================== */
 
@@ -356,21 +356,30 @@
     const band = new THREE.Mesh(bandGeo, bandMat);
     ringGroup.add(band);
 
-    const gemGeo = new THREE.OctahedronGeometry(0.42, 0);
+    const gemGeo = new THREE.OctahedronGeometry(0.38, 1);
     const gemMat = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
-      metalness: 0.1,
-      roughness: 0.05,
-      transmission: 0.9,
-      thickness: 0.6,
-      ior: 2.2,
+      metalness: 0,
+      roughness: 0.03,
+      transmission: 0.92,
+      thickness: 0.5,
+      ior: 2.4,
       reflectivity: 1,
       clearcoat: 1,
+      clearcoatRoughness: 0.04,
+      iridescence: 0.5,
+      iridescenceIOR: 1.3,
     });
     const gem = new THREE.Mesh(gemGeo, gemMat);
-    gem.position.set(0, 1.15, 0);
-    gem.scale.set(1, 1.3, 1);
+    gem.position.set(0, 0.92, 0);
+    gem.scale.set(0.9, 1.05, 0.9);
     ringGroup.add(gem);
+
+    // Sparkle highlight - a small twinkling point light gives the gem
+    // premium glints instead of a flat, faceted look.
+    const sparkleLight = new THREE.PointLight(0xffffff, 1.6, 5);
+    sparkleLight.position.set(0.8, 1.7, 1.3);
+    scene.add(sparkleLight);
 
     scene.add(ringGroup);
 
@@ -386,9 +395,10 @@
     const clock = new THREE.Clock();
     function animate() {
       const t = clock.getElapsedTime();
-      ringGroup.rotation.y = t * 0.6;
-      ringGroup.rotation.x = Math.sin(t * 0.4) * 0.15;
-      ringGroup.position.y = Math.sin(t * 1.1) * 0.08;
+      ringGroup.rotation.y = t * 0.4;
+      ringGroup.rotation.x = Math.sin(t * 0.35) * 0.12;
+      ringGroup.position.y = Math.sin(t * 0.9) * 0.06;
+      sparkleLight.intensity = 1.3 + Math.max(0, Math.sin(t * 2.2)) * 0.9;
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
