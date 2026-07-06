@@ -322,8 +322,8 @@
   function initRingScene() {
     const canvas = document.getElementById("ringCanvas");
     if (!canvas || !window.THREE || !isWebGLAvailable()) return;
-
     const THREE = window.THREE;
+
     let renderer;
     try {
       renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -331,60 +331,146 @@
       return;
     }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-    camera.position.set(0, 0.4, 5.2);
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+    camera.position.set(0, 0.15, 5.4);
+    camera.lookAt(0, 0.15, 0);
 
-    const keyLight = new THREE.DirectionalLight(0xfff2d6, 2.2);
+    // Small procedural studio environment so the gold reflects light and the
+    // diamond sparkles (biggest quality lever, no external files needed).
+    function buildEnv() {
+      const s = new THREE.Scene();
+      const dome = new THREE.Mesh(
+        new THREE.SphereGeometry(20, 24, 16),
+        new THREE.MeshBasicMaterial({ color: 0xf3eede, side: THREE.BackSide })
+      );
+      s.add(dome);
+      function panel(w, h, color, intensity, x, y, z) {
+        const m = new THREE.Mesh(
+          new THREE.PlaneGeometry(w, h),
+          new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(intensity) })
+        );
+        m.position.set(x, y, z);
+        m.lookAt(0, 0, 0);
+        s.add(m);
+      }
+      panel(10, 7, 0xffffff, 3.2, 0, 8, 6);
+      panel(6, 9, 0xfff1e0, 2.0, -8, 3, 3);
+      panel(6, 8, 0xffffff, 1.6, 7, 2, -3);
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      pmrem.compileEquirectangularShader();
+      const rt = pmrem.fromScene(s, 0.04);
+      s.traverse(function (o) {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) o.material.dispose();
+      });
+      pmrem.dispose();
+      return rt.texture;
+    }
+    const envMap = buildEnv();
+    scene.environment = envMap;
+
+    // Lights
+    const keyLight = new THREE.DirectionalLight(0xfff2d6, 1.6);
     keyLight.position.set(3, 4, 5);
     scene.add(keyLight);
-    const fillLight = new THREE.DirectionalLight(0xd98a98, 0.9);
-    fillLight.position.set(-4, -2, 3);
+    const fillLight = new THREE.DirectionalLight(0xd98a98, 0.5);
+    fillLight.position.set(-4, -1, 3);
     scene.add(fillLight);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-
-    const ringGroup = new THREE.Group();
-    const bandGeo = new THREE.TorusGeometry(1.15, 0.16, 32, 100);
-    const bandMat = new THREE.MeshStandardMaterial({
-      color: 0xd7b56d,
-      metalness: 1,
-      roughness: 0.25,
-      emissive: 0x3a2410,
-      emissiveIntensity: 0.08,
-    });
-    const band = new THREE.Mesh(bandGeo, bandMat);
-    ringGroup.add(band);
-
-    const gemGeo = new THREE.OctahedronGeometry(0.38, 1);
-    const gemMat = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      metalness: 0,
-      roughness: 0.03,
-      transmission: 0.92,
-      thickness: 0.5,
-      ior: 2.4,
-      reflectivity: 1,
-      clearcoat: 1,
-      clearcoatRoughness: 0.04,
-      iridescence: 0.5,
-      iridescenceIOR: 1.3,
-    });
-    const gem = new THREE.Mesh(gemGeo, gemMat);
-    gem.position.set(0, 0.92, 0);
-    gem.scale.set(0.9, 1.05, 0.9);
-    ringGroup.add(gem);
-
-    // Sparkle highlight - a small twinkling point light gives the gem
-    // premium glints instead of a flat, faceted look.
-    const sparkleLight = new THREE.PointLight(0xffffff, 1.6, 5);
-    sparkleLight.position.set(0.8, 1.7, 1.3);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+    const sparkleLight = new THREE.PointLight(0xffffff, 2.0, 12, 2);
+    sparkleLight.position.set(0.6, 1.6, 2.0);
     scene.add(sparkleLight);
 
+    const ringGroup = new THREE.Group();
     scene.add(ringGroup);
 
+    // Warm gold band, facing the viewer (the classic ring silhouette).
+    const bandMat = new THREE.MeshStandardMaterial({
+      color: 0xd9b45f,
+      metalness: 1,
+      roughness: 0.18,
+      envMap: envMap,
+      envMapIntensity: 1.4,
+    });
+    const band = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.12, 32, 140), bandMat);
+    ringGroup.add(band);
+
+    // Brilliant-cut diamond = crown (table) + pavilion (point), reflective and
+    // sparkly. LOW transmission so it never renders as a milky blob.
+    const diamondMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      vertexColors: true, // solid icy gradient (below), so the stone is visible
+      metalness: 0,
+      roughness: 0.05,
+      ior: 2.42,
+      reflectivity: 1,
+      clearcoat: 1,
+      clearcoatRoughness: 0.03,
+      envMap: envMap,
+      envMapIntensity: 1.8,
+      iridescence: 0.5,
+      iridescenceIOR: 1.4,
+      side: THREE.DoubleSide,
+    });
+
+    // Vertical diamond gradient painted onto the facets (diamond only).
+    // h = 0 at the culet (bottom point), 1 at the table (flat top).
+    const cCulet = new THREE.Color(0xd9c2f0);  // soft violet
+    const cGirdle = new THREE.Color(0xcfe0ff); // icy blue
+    const cTable = new THREE.Color(0xffffff);  // bright white
+    function diamondGradient(h) {
+      const c = new THREE.Color();
+      if (h < 0.5) c.copy(cCulet).lerp(cGirdle, h / 0.5);
+      else c.copy(cGirdle).lerp(cTable, (h - 0.5) / 0.5);
+      return c;
+    }
+    function paintGradient(geo, yMin, yMax, hMin, hMax) {
+      const pos = geo.attributes.position;
+      const colors = [];
+      for (let i = 0; i < pos.count; i++) {
+        const f = (pos.getY(i) - yMin) / (yMax - yMin);
+        const h = Math.max(0, Math.min(1, hMin + f * (hMax - hMin)));
+        const c = diamondGradient(h);
+        colors.push(c.r, c.g, c.b);
+      }
+      geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+    }
+
+    const diamond = new THREE.Group();
+    // Crown: local y -0.09 (girdle) .. +0.09 (table)  => gradient h 0.5 .. 1.0
+    const crownGeo = new THREE.CylinderGeometry(0.17, 0.33, 0.18, 8);
+    paintGradient(crownGeo, -0.09, 0.09, 0.5, 1.0);
+    const crown = new THREE.Mesh(crownGeo, diamondMat);
+    crown.position.y = 0.16;
+    diamond.add(crown);
+    // Pavilion: local y -0.21 (culet) .. +0.21 (girdle)  => gradient h 0.0 .. 0.5
+    const pavilionGeo = new THREE.ConeGeometry(0.33, 0.42, 8);
+    paintGradient(pavilionGeo, -0.21, 0.21, 0.0, 0.5);
+    const pavilion = new THREE.Mesh(pavilionGeo, diamondMat);
+    pavilion.rotation.x = Math.PI; // apex points down (culet)
+    pavilion.position.y = -0.14;
+    diamond.add(pavilion);
+    diamond.position.set(0, 1.05, 0);
+    diamond.rotation.y = Math.PI / 8;
+    ringGroup.add(diamond);
+
+    // Four slim prongs gripping the stone.
+    const prongGeo = new THREE.CylinderGeometry(0.028, 0.036, 0.34, 10);
+    [[0.22, 0.16], [-0.22, 0.16], [0.22, -0.16], [-0.22, -0.16]].forEach(function (p) {
+      const prong = new THREE.Mesh(prongGeo, bandMat);
+      prong.position.set(p[0], 0.98, p[1]);
+      prong.rotation.z = -p[0] * 0.5;
+      prong.rotation.x = p[1] * 0.5;
+      ringGroup.add(prong);
+    });
+
     function resize() {
-      const size = canvas.clientWidth || 220;
+      const size = canvas.clientWidth || 260;
       renderer.setSize(size, size, false);
       camera.aspect = 1;
       camera.updateProjectionMatrix();
@@ -394,13 +480,14 @@
 
     const clock = new THREE.Clock();
     function animate() {
-      const t = clock.getElapsedTime();
-      ringGroup.rotation.y = t * 0.4;
-      ringGroup.rotation.x = Math.sin(t * 0.35) * 0.12;
-      ringGroup.position.y = Math.sin(t * 0.9) * 0.06;
-      sparkleLight.intensity = 1.3 + Math.max(0, Math.sin(t * 2.2)) * 0.9;
-      renderer.render(scene, camera);
       requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      ringGroup.rotation.y = t * 0.35; // slow, elegant spin
+      ringGroup.rotation.x = -0.15 + Math.sin(t * 0.5) * 0.04; // slight tilt into the ring
+      ringGroup.position.y = 0.05 + Math.sin(t * 0.8) * 0.03;
+      diamondMat.envMapIntensity = 1.7 + Math.max(0, Math.sin(t * 2.2)) * 0.7; // twinkle
+      sparkleLight.intensity = 1.6 + Math.max(0, Math.sin(t * 2.6)) * 1.2;
+      renderer.render(scene, camera);
     }
     animate();
   }

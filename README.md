@@ -1,16 +1,16 @@
-# Aayushi & Chirag — Engagement Invitation
+# Aayushi & Chirag - Engagement Invitation
 
-A premium, single-page 3D engagement invitation website. Built with plain HTML5, CSS3, and vanilla JavaScript — no frameworks, no build step required.
+A premium, single-page 3D engagement invitation website. Built with plain HTML5, CSS3, and vanilla JavaScript - no frameworks, no build step required.
 
 ## Libraries used (via CDN, already linked in `index.html`)
 
-- Three.js — 3D hero petal field, rotating engagement ring, floating orb field
-- GSAP + ScrollTrigger — scroll-based reveal animations
-- Lenis — smooth scrolling
-- AOS (Animate On Scroll) — fade/zoom entrance animations
-- VanillaTilt.js — interactive 3D tilt on cards and the couple photo
-- Font Awesome — icons
-- Google Fonts — Playfair Display, Cormorant Garamond, Poppins
+- Three.js - 3D hero petal field, rotating engagement ring, floating orb field
+- GSAP + ScrollTrigger - scroll-based reveal animations
+- Lenis - smooth scrolling
+- AOS (Animate On Scroll) - fade/zoom entrance animations
+- VanillaTilt.js - interactive 3D tilt on cards and the couple photo
+- Font Awesome - icons
+- Google Fonts - Playfair Display, Cormorant Garamond, Poppins
 
 ## Running locally
 
@@ -29,7 +29,7 @@ npx serve .
 
 ### Netlify / Vercel (drag & drop)
 1. Go to [Netlify Drop](https://app.netlify.com/drop) or Vercel's dashboard.
-2. Drag this whole folder in — it deploys instantly, no build config needed.
+2. Drag this whole folder in - it deploys instantly, no build config needed.
 
 ## File structure
 
@@ -45,4 +45,4 @@ assets/         Illustrations (couple, garden, ganesha, gallery images)
 
 ## Event details
 
-Sunday, 19 July 2026, 9:00 AM — Rajput Samaj Bhavan, Kharwani Poll Darwaja, Wadhwan, Surendranagar.
+Sunday, 19 July 2026, 9:00 AM - Rajput Samaj Bhavan, Kharwani Poll Darwaja, Wadhwan, Surendranagar.
